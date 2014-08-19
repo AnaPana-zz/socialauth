@@ -86,3 +86,28 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/data/web/static'
+
+
+# Logging
+
+LOGGING = {
+  'version': 1,
+  'disable_existing_loggers': False,
+  'handlers': {
+      'logstash': {
+          'level': 'ERROR',
+          'class': 'logstash.LogstashHandler',
+          'host': os.environ['LOGSTASH_HOST'],
+          'port': int(os.environ['LOGSTASH_UDP_PORT']),
+          'version': 1,
+          'message_type': 'logstash',
+      },
+  },
+  'loggers': {
+      'django': {
+          'handlers': ['logstash'],
+          'level': 'DEBUG',
+          'propagate': True,
+      },
+  },
+}
