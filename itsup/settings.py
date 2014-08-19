@@ -59,11 +59,11 @@ WSGI_APPLICATION = 'itsup.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'django',
-        'USER': 'django',
-        'PASSWORD': 'G4skU1^!QXJz#UQK',
-        'HOST': 'itsup_pgsql',
-        'PORT': 5432,
+        'NAME': os.environ['DJANGO_DB_NAME'],
+        'USER': os.environ['DJANGO_DB_USER'],
+        'PASSWORD': os.environ['DJANGO_DB_PASS'],
+        'HOST': os.environ['PGSQL_HOST'],
+        'PORT': os.environ['PGSQL_PORT'],
     }
 }
 
