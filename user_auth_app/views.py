@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from django.views.generic.base import View
 
 from .models import CustomUser
+from .forms import CustomUserForm
 
 
 class BaseView(View):
@@ -31,7 +32,22 @@ class LoginView(BaseView):
 
 class RegistrationView(BaseView):
 
-    pass
+    templateName = 'user_auth_app/registration.html'
+
+    def get(self, request):
+        self.context['registration_form'] = CustomUserForm()
+        response = render(request, self.templateName, self.context)
+        return response
+
+    def post(self, request):
+        form = CustomUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('home'))
+        else:
+            self.context['registration_form'] = form
+        response = render(request, self.templateName, self.context)
+        return response
 
 
 class LogoutView(BaseView):

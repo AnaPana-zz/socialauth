@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-    {{ registration_form }}
-    <br/>
-    <a href="#" class="btn btn-success">Submit</a><br/>
-    <a href="{% url 'home' %}">Cancel</a><br/>
+    <form method="post">{% csrf_token %}
+        {{ registration_form.as_p }}
+        <br/>
+        <input type="submit" class="btn btn-success" value="Register"/><br/>
+        <a href="{% url 'home' %}">Cancel</a><br/>
+    </form>
 
 {% endblock %}
