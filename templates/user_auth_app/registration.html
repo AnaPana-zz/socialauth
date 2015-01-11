@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+    {{ registration_form }}
+    <br/>
+    <a href="#" class="btn btn-success">Submit</a><br/>
+    <a href="{% url 'home' %}">Cancel</a><br/>
+
+{% endblock %}

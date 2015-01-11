@@ -47,6 +47,29 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'custom_middlewares.middlewares.CatchSocialAuthExceptionMiddleware',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'django.core.context_processors.tz',
+    'django.contrib.messages.context_processors.messages',
+    'django.core.context_processors.request',
+    'social.apps.django_app.context_processors.backends',
+    'social.apps.django_app.context_processors.login_redirect',
+)
+
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+)
+
+TEMPLATE_DIRS = (
+    os.path.normpath(os.path.join(BASE_DIR, 'templates')),
 )
 
 ROOT_URLCONF = 'itsup.urls'
@@ -88,6 +111,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = '/data/web/static'
 
+STATICFILES_DIRS = (
+    os.path.normpath(os.path.join(BASE_DIR, 'static')),
+)
+
 AUTHENTICATION_BACKENDS = (
     'social.backends.facebook.FacebookOAuth2',
     'social.backends.google.GoogleOAuth2',
@@ -102,10 +129,10 @@ AUTHENTICATION_BACKENDS = (
 
 AUTH_USER_MODEL = 'user_auth_app.CustomUser'
 
-LOGIN_URL          = '/auth_app/login/'
-LOGIN_REDIRECT_URL = '/auth_app/logged-in/'
-LOGIN_ERROR_URL    = '/auth_app/login-error/'
-SOCIAL_AUTH_DISCONNECT_REDIRECT_URL = '/auth_app/logout/'
+LOGIN_URL          = '/user_account/login/'
+LOGIN_REDIRECT_URL = '/user_account/logged-in/'
+LOGIN_ERROR_URL    = '/user_account/login-error/'
+SOCIAL_AUTH_DISCONNECT_REDIRECT_URL = '/user_account/logout/'
 SOCIAL_AUTH_COMPLETE_URL_NAME  = 'socialauth_complete'
 
 # These environment variables are different for production and local servers

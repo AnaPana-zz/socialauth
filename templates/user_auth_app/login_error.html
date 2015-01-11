@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+    {{ error_message }}
+    <br/>
+    Try to login with other provider or sign up for a new account.<br/>
+    <a href="{% url 'login' %}">Sig In</a><br/>
+    <a href="{% url 'login' %}">Sign Up</a><br/>
+{% endblock %}

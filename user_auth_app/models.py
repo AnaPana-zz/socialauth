@@ -12,11 +12,27 @@ class UserDetailsValidationException(Exception):
 
 class CustomUserManager(BaseUserManager):
 
-    def create_user(self, *args, **kwargs):
-        super(CustomUserManager, self).create_user(*args, **kwargs)
+    def create_user(self, username=None, email=None, password=None, **kwargs):
 
-    def create_superuser(self, *args, **kwargs):
-        super(CustomUserManager, self).create_superuser(*args, **kwargs)
+        if not email:
+            raise UserDetailsValidationException('Users must have a valid email address. Probably your email doesn\'t confirmed.')
+
+        account = self.model(
+            email=self.normalize_email(email), username=username, **kwargs
+        )
+
+        account.set_password(password)
+        account.save()
+
+        return account
+
+    def create_superuser(self, username, email, password, **kwargs):
+        account = self.create_user(username, email, password, **kwargs)
+
+        account.is_superuser = True
+        account.save()
+
+        return account
 
 
 class CustomUser(AbstractBaseUser):

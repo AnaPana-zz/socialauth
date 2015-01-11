@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block ng_controller %}AppController{% endblock %}
+{% block content %}
+    Wellcome to social auth page.
+    Please select authorization type:
+
+    <br>
+
+        <a id="google" href="{% url 'social:begin' 'google-oauth2' %}"><img src="{{ STATIC_URL }}/img/icons/google-plus.png" width="30px"></a>
+        <a id="linkedin" href="{% url 'social:begin' 'linkedin' %}"><img src="{{ STATIC_URL }}/img/icons/linkedin.png" width="30px"></a>
+        <a id="dropbox" href="{% url 'social:begin' 'dropbox' %}"><img src="{{ STATIC_URL }}/img/icons/dropbox.png" width="30px"></a>
+        <a id="facebook" href="{% url 'social:begin' 'facebook' %}"><img src="{{ STATIC_URL }}/img/icons/facebook.png" width="30px"></a>
+        <a id="github" href="{% url 'social:begin' 'github' %}"><img src="{{ STATIC_URL }}/img/icons/github.png" width="30px"></a>
+        <a id="vk" href="{% url 'social:begin' 'vk-oauth2' %}"><img src="{{ STATIC_URL }}/img/icons/vk.png" width="30px"></a>
+        <!--<a id="stackoverflow" href="{% url 'social:begin' 'stackoverflow' %}"><img src="{{ STATIC_URL }}/img/icons/stackoverflow.png" width="30px"></a>-->
+
+    <br/>
+    <a href="#" class="btn btn-success">Sign in</a><br/>
+    <a href="#">Register new user</a><br/>
+
+  <ul>
+    <li ng-repeat="phone in phones">
+      <span>{{phone.name}}</span>
+      <p>{{phone.snippet}}</p>
+    </li>
+  </ul>
+
+{% endblock %}
