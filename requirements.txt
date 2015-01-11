@@ -1,4 +1,5 @@
 Django==1.7.1
+python-social-auth==0.2.1
 ipython==2.3.1
 psycopg2==2.5.4
 python-logstash==0.4.2
