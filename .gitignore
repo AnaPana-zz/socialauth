@@ -1,0 +1,5 @@
+*.pyc
+itsup/*.db
+*__pycache__/*
+.idea/*
+*/migrations/*
