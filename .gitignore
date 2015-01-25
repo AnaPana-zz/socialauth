@@ -3,3 +3,5 @@ itsup/*.db
 *__pycache__/*
 .idea/*
 */migrations/*
+*.db
+*itsup/settings.py
