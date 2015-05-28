@@ -1,5 +1,6 @@
 *.pyc
-itsup/*.db
+itsup.db
 *__pycache__/*
 .idea/*
 */migrations/*
+.local_vars
