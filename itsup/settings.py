@@ -10,6 +10,9 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+
+from .credentials import *
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 ON_OPENSHIFT = False
@@ -160,13 +163,9 @@ SOCIAL_AUTH_COMPLETE_URL_NAME  = 'socialauth_complete'
 
 # These environment variables are different for production and local servers
 # I've created two applications on all of the resources for testing on localhost and on Openshift
-SOCIAL_AUTH_FACEBOOK_KEY = os.environ['SOCIAL_AUTH_FACEBOOK_KEY']
-SOCIAL_AUTH_FACEBOOK_SECRET = os.environ['SOCIAL_AUTH_FACEBOOK_SECRET']
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']  # facebook doesn't provide email address by default
 # Note, that some facebook users can have unconfirmed email. In this case API wouldn't return it.
 
-SOCIAL_AUTH_LINKEDIN_KEY = os.environ['SOCIAL_AUTH_LINKEDIN_KEY']
-SOCIAL_AUTH_LINKEDIN_SECRET = os.environ['SOCIAL_AUTH_LINKEDIN_SECRET']
 SOCIAL_AUTH_LINKEDIN_SCOPE = ['r_basicprofile', 'r_emailaddress']
 SOCIAL_AUTH_LINKEDIN_FIELD_SELECTORS = ['email-address']  # linkedin doesn't provide email address by default
 SOCIAL_AUTH_LINKEDIN_EXTRA_DATA = [('id', 'id'),
@@ -174,23 +173,9 @@ SOCIAL_AUTH_LINKEDIN_EXTRA_DATA = [('id', 'id'),
                                    ('lastName', 'last_name'),
                                    ('emailAddress', 'email_address')]
 
-
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ['SOCIAL_AUTH_GOOGLE_OAUTH2_KEY']
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ['SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET']
-
-SOCIAL_AUTH_GITHUB_KEY = os.environ['SOCIAL_AUTH_GITHUB_KEY']
-SOCIAL_AUTH_GITHUB_SECRET = os.environ['SOCIAL_AUTH_GITHUB_SECRET']
 SOCIAL_AUTH_GITHUB_SCOPE = ['user:email']
 
-SOCIAL_AUTH_DROPBOX_KEY = os.environ['SOCIAL_AUTH_DROPBOX_KEY']
-SOCIAL_AUTH_DROPBOX_SECRET = os.environ['SOCIAL_AUTH_DROPBOX_SECRET']
-
-SOCIAL_AUTH_VK_OAUTH2_KEY = os.environ['SOCIAL_AUTH_VK_OAUTH2_KEY']
-SOCIAL_AUTH_VK_OAUTH2_SECRET = os.environ['SOCIAL_AUTH_VK_OAUTH2_SECRET']
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
-
-SOCIAL_AUTH_STACKOVERFLOW_KEY = os.environ['SOCIAL_AUTH_STACKOVERFLOW_KEY']
-SOCIAL_AUTH_STACKOVERFLOW_SECRET = os.environ['SOCIAL_AUTH_STACKOVERFLOW_SECRET']
 
 
 SOCIAL_AUTH_PIPELINE = (
