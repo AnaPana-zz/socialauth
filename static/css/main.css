@@ -1,0 +1,23 @@
+.full {
+    background: url('http://www.boylanbridgebrass.com/wp-content/uploads/2013/02/background-blue-cloudless-sky-matte-wallpaper-backdrop.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+
+.vcenter {
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+
+  display: flex;
+  align-items: center;
+}
+
+.center-block.login {
+  width:600px;
+}
+
+.bordered-right {
+  border-right: 1px solid #E1E1E1;
+  }
