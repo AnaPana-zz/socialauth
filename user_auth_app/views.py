@@ -29,6 +29,13 @@ class LoginView(BaseView):
         return response
 
 
+class LoginErrorView(BaseView):
+    templateName = 'user_auth_app/login-error.html'
+
+    def get(self, request):
+        response = render(request, self.templateName)
+        return response
+
 class RegistrationView(BaseView):
 
     pass
