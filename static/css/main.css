@@ -18,6 +18,10 @@
   width:600px;
 }
 
+.jumbotron.registration {
+  padding: 20px;
+}
+
 .bordered-right {
   border-right: 1px solid #E1E1E1;
   }

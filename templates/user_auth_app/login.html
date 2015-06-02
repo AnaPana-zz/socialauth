@@ -9,7 +9,7 @@
           <fieldset>
           
           <!-- Form Name -->
-          <legend><h4><b>Log Into ITSup</b></h4></legend>
+          <legend><h4><b>Log Into {{ app_name }}</b></h4></legend>
           
           <!-- Text input-->
           <div class="form-group">
@@ -57,7 +57,7 @@
                 <div class="col-md-2"><a id="vk" class="btn btn-block btn-social-icon btn-sm btn-vk" href="{% url 'social:begin' 'vk-oauth2' %}"><i class="fa fa-vk"></i></a></div>
                 </div>
                 <!--<a id="stackoverflow" href="{% url 'social:begin' 'stackoverflow' %}"><img src="{{ STATIC_URL }}/img/icons/stackoverflow.png" width="30px"></a>-->
-		<div style="margin-top:10px;"><a href="#">Sign in with email</a></div>
+		<div style="margin-top:10px;"><a href="{% url 'registration' %}">Sign in with email</a></div>
 	</div>
 	
      </div> 

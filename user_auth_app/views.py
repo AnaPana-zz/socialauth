@@ -13,7 +13,7 @@ import os
 
 class BaseView(View):
 
-    context = {}
+    context = {'app_name' : 'ITSup'}
 
 
 class LoggedInView(BaseView):
@@ -30,7 +30,7 @@ class LoginView(BaseView):
     def get(self, request):
         login_form = 'bla'
         # self.context['login_form'] = login_form
-        response = render(request, self.templateName)
+        response = render(request, self.templateName, self.context)
         return response
 
 
@@ -44,7 +44,7 @@ class LoginAddView(BaseView):
     def get(self, request):
         login_form = 'bla'
         # self.context['login_form'] = login_form
-        response = render(request, self.templateName)
+        response = render(request, self.templateName, self.context)
         return response
 
 

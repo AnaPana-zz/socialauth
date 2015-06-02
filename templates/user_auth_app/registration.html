@@ -1,10 +1,31 @@
 {% extends 'base.html' %}
 {% block content %}
-    <form method="post">{% csrf_token %}
-        {{ registration_form.as_p }}
-        <br/>
-        <input type="submit" class="btn btn-success" value="Register"/><br/>
-        <a href="{% url 'home' %}">Cancel</a><br/>
-    </form>
+<div class="row">
+  <div class="vcenter">
+    <div class="jumbotron center-block registration">
+     <div class="row">
+        <form method="post">{% csrf_token %}
+          <legend><h4><b>Register to {{ app_name }}</b></h4></legend>
+          {% for field in registration_form %}
+             <div class="form-group">
+                <div class="row">
+                   <div class="col-md-6">
+                      <label>{{ field.label }}</label>
+                   </div>
+                   <div class="col-md-6">
+                      {{ field }}
+                   </div>
+                </div>
 
+            </div>
+          {% endfor %}
+          <div class="row">
+             <input type="submit" class="btn btn-success" value="Register"/>
+             <a class="btn btn-default" href="{% url 'home' %}">Cancel</a>
+          </div>
+        </form>
+     </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

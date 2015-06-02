@@ -5,3 +5,4 @@ itsup.db
 */migrations/*
 *.db
 itsup/credentials.py
+*.bak
