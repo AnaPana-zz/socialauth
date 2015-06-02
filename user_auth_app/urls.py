@@ -6,5 +6,6 @@ urlpatterns = patterns('',
     url(r'^logged-in/$', LoggedInView.as_view(), name='logged-in'),
     url(r'^accounts/login/$', LoginView.as_view(), name='login'),
     url(r'^login/$', LoginView.as_view(), name='login'),
+    url(r'^login-error/$', LoginErrorView.as_view(), name='login-error'),
     url(r'^logout/', LogoutView.as_view(), name='logout'),
 )
