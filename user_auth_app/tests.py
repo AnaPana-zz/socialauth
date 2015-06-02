@@ -3,7 +3,7 @@ from django.test import LiveServerTestCase, TestCase, Client, RequestFactory
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.conf import settings
 
-from selenium.webdriver.firefox.webdriver import WebDriver
+from selenium import webdriver
 
 from selenium.common.exceptions import NoSuchElementException
 from pyvirtualdisplay import Display
@@ -26,6 +26,14 @@ PROVIDERS = {
 
 SKIP_UNIT_TESTS = False
 SKIP_SELENIUM_TESTS = False
+
+if os.environ.get('REMOTE_SERVER_URL'):
+    base_class = unittest.TestCase
+    base_class.live_server_url = os.environ.get('REMOTE_SERVER_URL')
+else:
+    os.environ['DJANGO_LIVE_TEST_SERVER_ADDRESS'] = "localhost:8000-8010,8080,9200-9300"
+    base_class = StaticLiveServerTestCase
+
 
 class ResponsesTestCase(TestCase):
     """
@@ -75,34 +83,31 @@ class ResponsesTestCase(TestCase):
 
 
 
-class SocialAuthGUITests(StaticLiveServerTestCase):
+class SocialAuthGUITests(base_class):
     """
     Class for basic literature search tests.
     """
 
-    @classmethod
-    def setUpClass(cls):
+    def setUp(self):
         """
         Initializes web driver and virtual display for web tests.
         """
-        cls.selenium = WebDriver()
-        super(SocialAuthGUITests, cls).setUpClass()
-        if os.environ.get('DISPLAY'): # check if X display is present
-            pass
-        else:  # create virtual display
-            cls.display = Display(visible=0, size=(1024, 768))
-            cls.display.start()
+        #if os.environ.get('DISPLAY'): # check if X display is present
+        #    pass
+        #else:  # create virtual display
+        self.display = Display(visible=0, size=(1024, 768))
+        self.display.start()
+        
+        self.selenium = webdriver.Firefox()
 
 
-    @classmethod
-    def tearDownClass(cls):
+    def tearDown(self):
         """
         Closes driver and virtual display.
         """
-        cls.selenium.quit()
-        if hasattr(cls, 'display'): # for virtual display
-            cls.display.stop()
-        super(SocialAuthGUITests, cls).tearDownClass()
+        self.selenium.quit()
+        if hasattr(self, 'display'): # for virtual display
+            self.display.stop()
 
 
     @unittest.skipIf(SKIP_SELENIUM_TESTS, "Skip selenium tests.")

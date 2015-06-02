@@ -1,7 +1,7 @@
 *.pyc
-itsup/*.db
+itsup.db
 *__pycache__/*
 .idea/*
 */migrations/*
 *.db
-*itsup/settings.py
+itsup/credentials.py

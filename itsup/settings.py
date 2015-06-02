@@ -10,21 +10,32 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+
+from .credentials import *
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+ON_OPENSHIFT = False
+if os.environ.get('OPENSHIFT_REPO_DIR'):
+    ON_OPENSHIFT = True
+
+
+if ON_OPENSHIFT:
+    DEBUG = False
+else:
+    DEBUG = True
+TEMPLATE_DEBUG = DEBUG
+
+if ON_OPENSHIFT:
+    ALLOWED_HOSTS = [
+        '.rhcloud.com',  # Allow domain and subdomains
+    ]
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '#x9j5hn3lf!0q@wak2gfpt!z5$nfaiswhz))2-7eqaix*r!^2i'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DJANGO_DEBUG', False)
-
-TEMPLATE_DEBUG = os.environ.get('DJANGO_TEMPLATE_DEBUG', DEBUG)
-
-ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -47,7 +58,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'custom_middlewares.middlewares.CatchSocialAuthExceptionMiddleware',
+    'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
+    #'custom_middlewares.middlewares.CatchSocialAuthExceptionMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -80,17 +92,30 @@ WSGI_APPLICATION = 'itsup.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ['DJANGO_DB_NAME'],
-        'USER': os.environ['DJANGO_DB_USER'],
-        'PASSWORD': os.environ['DJANGO_DB_PASS'],
-        'HOST': os.environ['PGSQL_HOST'],
-        'PORT': os.environ['PGSQL_PORT'],
+if ON_OPENSHIFT:
+    # os.environ['OPENSHIFT_POSTGRESQL_DB_*'] variables can be used with databases created
+    # with rhc cartridge add (see /README in this git repo)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',  # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+            'NAME': os.environ['OPENSHIFT_APP_NAME'],  # Or path to database file if using sqlite3.
+            'USER': os.environ['OPENSHIFT_POSTGRESQL_DB_USERNAME'],                      # Not used with sqlite3.
+            'PASSWORD': os.environ['OPENSHIFT_POSTGRESQL_DB_PASSWORD'],                  # Not used with sqlite3.
+            'HOST': os.environ['OPENSHIFT_POSTGRESQL_DB_HOST'],                      # Set to empty string for localhost. Not used with sqlite3.
+            'PORT': os.environ['OPENSHIFT_POSTGRESQL_DB_PORT'],                      # Set to empty string for default. Not used with sqlite3.
+        }
     }
-}
-
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+            'NAME': 'itsup.db',
+            'USER': '',
+            'PASSWORD': '',
+            'HOST': '',
+            'PORT': '',
+        }
+    }
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
@@ -109,7 +134,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/data/web/static'
+
+if ON_OPENSHIFT:
+	STATIC_ROOT = os.path.join(os.environ.get('OPENSHIFT_REPO_DIR'), 'wsgi', 'static')
 
 STATICFILES_DIRS = (
     os.path.normpath(os.path.join(BASE_DIR, 'static')),
@@ -137,13 +164,9 @@ SOCIAL_AUTH_COMPLETE_URL_NAME  = 'socialauth_complete'
 
 # These environment variables are different for production and local servers
 # I've created two applications on all of the resources for testing on localhost and on Openshift
-SOCIAL_AUTH_FACEBOOK_KEY = os.environ['SOCIAL_AUTH_FACEBOOK_KEY']
-SOCIAL_AUTH_FACEBOOK_SECRET = os.environ['SOCIAL_AUTH_FACEBOOK_SECRET']
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']  # facebook doesn't provide email address by default
 # Note, that some facebook users can have unconfirmed email. In this case API wouldn't return it.
 
-SOCIAL_AUTH_LINKEDIN_KEY = os.environ['SOCIAL_AUTH_LINKEDIN_KEY']
-SOCIAL_AUTH_LINKEDIN_SECRET = os.environ['SOCIAL_AUTH_LINKEDIN_SECRET']
 SOCIAL_AUTH_LINKEDIN_SCOPE = ['r_basicprofile', 'r_emailaddress']
 SOCIAL_AUTH_LINKEDIN_FIELD_SELECTORS = ['email-address']  # linkedin doesn't provide email address by default
 SOCIAL_AUTH_LINKEDIN_EXTRA_DATA = [('id', 'id'),
@@ -151,23 +174,9 @@ SOCIAL_AUTH_LINKEDIN_EXTRA_DATA = [('id', 'id'),
                                    ('lastName', 'last_name'),
                                    ('emailAddress', 'email_address')]
 
-
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ['SOCIAL_AUTH_GOOGLE_OAUTH2_KEY']
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ['SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET']
-
-SOCIAL_AUTH_GITHUB_KEY = os.environ['SOCIAL_AUTH_GITHUB_KEY']
-SOCIAL_AUTH_GITHUB_SECRET = os.environ['SOCIAL_AUTH_GITHUB_SECRET']
 SOCIAL_AUTH_GITHUB_SCOPE = ['user:email']
 
-SOCIAL_AUTH_DROPBOX_KEY = os.environ['SOCIAL_AUTH_DROPBOX_KEY']
-SOCIAL_AUTH_DROPBOX_SECRET = os.environ['SOCIAL_AUTH_DROPBOX_SECRET']
-
-SOCIAL_AUTH_VK_OAUTH2_KEY = os.environ['SOCIAL_AUTH_VK_OAUTH2_KEY']
-SOCIAL_AUTH_VK_OAUTH2_SECRET = os.environ['SOCIAL_AUTH_VK_OAUTH2_SECRET']
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
-
-SOCIAL_AUTH_STACKOVERFLOW_KEY = os.environ['SOCIAL_AUTH_STACKOVERFLOW_KEY']
-SOCIAL_AUTH_STACKOVERFLOW_SECRET = os.environ['SOCIAL_AUTH_STACKOVERFLOW_SECRET']
 
 
 SOCIAL_AUTH_PIPELINE = (
@@ -186,27 +195,34 @@ SOCIAL_AUTH_PIPELINE = (
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
+EMAIL_HOST = os.environ['EMAIL_HOST']
+EMAIL_PORT = os.environ['EMAIL_PORT']
+EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+EMAIL_USE_TLS = os.environ['EMAIL_USE_TLS']
 
-# Logging
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
+# A sample logging configuration. The only tangible logging
+# performed by this configuration is to send an email to
+# the site admins on every HTTP 500 error.
+# See http://docs.djangoproject.com/en/dev/topics/logging for
+# more details on how to customize your logging configuration.
 LOGGING = {
-  'version': 1,
-  'disable_existing_loggers': False,
-  'handlers': {
-      'logstash': {
-          'level': 'ERROR',
-          'class': 'logstash.LogstashHandler',
-          'host': os.environ['LOGSTASH_HOST'],
-          'port': int(os.environ['LOGSTASH_UDP_PORT']),
-          'version': 1,
-          'message_type': 'logstash',
-      },
-  },
-  'loggers': {
-      'django': {
-          'handlers': ['logstash'],
-          'level': 'DEBUG',
-          'propagate': True,
-      },
-  },
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    }
 }
+

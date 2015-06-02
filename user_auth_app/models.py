@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import BaseUserManager
 from django.db import models
 
+import datetime
 
 class UserDetailsValidationException(Exception):
     """
@@ -46,6 +47,9 @@ class CustomUser(AbstractBaseUser):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    activation_key = models.CharField(max_length=40, blank=True, null=True)
+    key_expires = models.DateTimeField(default=datetime.datetime.now())
 
     objects = CustomUserManager()
 

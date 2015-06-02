@@ -1,20 +1,68 @@
 {% extends 'base.html' %}
 {% block content %}
-    Wellcome to social auth page.
-    Please select authorization type:
-
-    <br>
-
-        <a id="google" href="{% url 'social:begin' 'google-oauth2' %}"><img src="{{ STATIC_URL }}/img/icons/google-plus.png" width="30px"></a>
-        <a id="linkedin" href="{% url 'social:begin' 'linkedin' %}"><img src="{{ STATIC_URL }}/img/icons/linkedin.png" width="30px"></a>
-        <a id="dropbox" href="{% url 'social:begin' 'dropbox' %}"><img src="{{ STATIC_URL }}/img/icons/dropbox.png" width="30px"></a>
-        <a id="facebook" href="{% url 'social:begin' 'facebook' %}"><img src="{{ STATIC_URL }}/img/icons/facebook.png" width="30px"></a>
-        <a id="github" href="{% url 'social:begin' 'github' %}"><img src="{{ STATIC_URL }}/img/icons/github.png" width="30px"></a>
-        <a id="vk" href="{% url 'social:begin' 'vk-oauth2' %}"><img src="{{ STATIC_URL }}/img/icons/vk.png" width="30px"></a>
-        <!--<a id="stackoverflow" href="{% url 'social:begin' 'stackoverflow' %}"><img src="{{ STATIC_URL }}/img/icons/stackoverflow.png" width="30px"></a>-->
-
-    <br/>
-    <a href="#" class="btn btn-success">Sign in</a><br/>
-    <a href="{% url 'registration' %}">Register new user</a><br/>
-
+<div class="row">
+  <div class="vcenter">
+    <div class="jumbotron center-block login">
+     <div class="row">
+	<div class="col-md-7 bordered-right">
+          <form class="form-horizontal">
+          <fieldset>
+          
+          <!-- Form Name -->
+          <legend><h4><b>Log Into ITSup</b></h4></legend>
+          
+          <!-- Text input-->
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="textinput">Email</label>  
+            <div class="col-md-8">
+            <input id="textinput" name="textinput" placeholder="Email" class="form-control input-md" required="" type="text">
+            </div>
+          </div>
+          
+          <!-- Password input-->
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="password">Password</label>
+            <div class="col-md-8">
+              <input id="password" name="password" placeholder="Password" class="form-control input-md" required="" type="password">
+            </div>
+          </div>
+          
+          <!-- Multiple Checkboxes -->
+          <div class="form-group">
+            <div class="col-md-8">
+            <div class="checkbox">
+              <label for="checkboxes-0">
+                <input name="checkboxes" id="checkboxes-0" value="1" type="checkbox">
+                Remember me
+              </label>
+          	</div>
+            </div>
+            <div class="col-md-4">
+             <button id="loginbutton" name="loginbutton" class="btn btn-primary">Log In</button>
+            </div>
+          </div>
+          
+          </fieldset>
+          </form>
+</div>
+	<div class="col-md-5">
+          <legend><h5><b>Not a member yet?<b></h5></legend>
+	     <a id="facebook" class="btn btn-block btn-social btn-sm btn-facebook" href="{% url 'social:begin' 'facebook' %}"><i class="fa fa-facebook"></i> Sign in with Facebook</a>
+	     <a id="google" class="btn btn-block btn-social btn-sm btn-google" href="{% url 'social:begin' 'google-oauth2' %}"><i class="fa fa-google"></i>Sign in with Google</a>
+	     <a id="linkedin" class="btn btn-block btn-social btn-sm btn-linkedin" href="{% url 'social:begin' 'linkedin' %}"><i class="fa fa-linkedin"></i> Sign in with LinkedIn </a>
+	     <div style="margin-top:10px;">Or sign in with</div>
+                <div class="row">
+                <div class="col-md-2"><a id="dropbox" class="btn btn-block btn-social-icon btn-sm btn-dropbox" href="{% url 'social:begin' 'dropbox' %}"><i class="fa fa-dropbox"></i></a></div>
+                <div class="col-md-2"><a id="github" class="btn btn-block btn-social-icon btn-sm btn-github" href="{% url 'social:begin' 'github' %}"><i class="fa fa-github"></i></a></div>
+                <div class="col-md-2"><a id="vk" class="btn btn-block btn-social-icon btn-sm btn-vk" href="{% url 'social:begin' 'vk-oauth2' %}"><i class="fa fa-vk"></i></a></div>
+                </div>
+                <!--<a id="stackoverflow" href="{% url 'social:begin' 'stackoverflow' %}"><img src="{{ STATIC_URL }}/img/icons/stackoverflow.png" width="30px"></a>-->
+		<div style="margin-top:10px;"><a href="#">Sign in with email</a></div>
+	</div>
+	
+     </div> 
+ </div>
+</div>
+</div>
 {% endblock %}
+>>>>>>> master
