@@ -1,4 +1,4 @@
-<img title="Build Status Images" src="https://travis-ci.org/AnaPana/socialauth.svg?branch=master"/>
+[![Build Status](https://travis-ci.org/AnaPana/socialauth.svg?branch=master)](https://travis-ci.org/AnaPana/socialauth)
 
 Socialauth app
 ==============
