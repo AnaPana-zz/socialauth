@@ -1,3 +1,5 @@
+<img title="Build Status Images" src="https://travis-ci.org/AnaPana/socialauth.svg?branch=master"/>
+
 Socialauth app
 ==============
 
