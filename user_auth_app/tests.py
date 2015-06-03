@@ -25,7 +25,7 @@ PROVIDERS = {
 }
 
 SKIP_UNIT_TESTS = False
-SKIP_SELENIUM_TESTS = False
+SKIP_SELENIUM_TESTS = True
 
 if os.environ.get('REMOTE_SERVER_URL'):
     base_class = unittest.TestCase
