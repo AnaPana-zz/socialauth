@@ -13,6 +13,7 @@ import time
 import os
 
 from .views import *
+from .models import *
 
 PROVIDERS = {
     "google" : {'login_url' : "google-oauth2", 'site_url' : "https://accounts.google.com/"},
@@ -24,7 +25,7 @@ PROVIDERS = {
     # "stackoverflow" : {'login_url' : "stackoverflow", 'site_url' : "https://stackexchange.com/"},
 }
 
-SKIP_UNIT_TESTS = False
+SKIP_UNIT_TESTS = True
 SKIP_SELENIUM_TESTS = True
 
 if os.environ.get('REMOTE_SERVER_URL'):
@@ -33,6 +34,23 @@ if os.environ.get('REMOTE_SERVER_URL'):
 else:
     os.environ['DJANGO_LIVE_TEST_SERVER_ADDRESS'] = "localhost:8000-8010,8080,9200-9300"
     base_class = StaticLiveServerTestCase
+
+
+class TestMainURLs(TestCase):
+    
+    def setUp(self):
+        self.test_server_url = 'http://testserver'
+    
+    def test_login_redirect(self):
+        response = self.client.get('/', follow=True)
+        self.assertEqual(response.redirect_chain,[('%s/user_account/login/?next=/' % self.test_server_url, 302)])
+
+    def test_login_user_is_logged_in(self):
+        self.user = CustomUser.objects.create_user('Masha', 'masha@good.cat', '123') 
+        c = Client()
+        response = c.post('/user_account/login', {'username': 'Masha', 'password': '123'})
+        response = self.client.get('/', follow=True)
+        self.assertEqual(response.status_code, 200)
 
 
 class ResponsesTestCase(TestCase):
