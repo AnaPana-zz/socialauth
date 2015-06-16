@@ -17,6 +17,8 @@ class CustomUserManager(BaseUserManager):
 
         if not email:
             raise UserDetailsValidationException('Users must have a valid email address. Probably your email doesn\'t confirmed.')
+        if not username:
+            username = email
 
         account = self.model(
             email=self.normalize_email(email), username=username, **kwargs
@@ -41,8 +43,6 @@ class CustomUser(AbstractBaseUser):
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=40, unique=True) # public display name
 
-    connected_providers = models.CharField(max_length=140, blank=True, default='')
-
     is_superuser = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -53,7 +53,7 @@ class CustomUser(AbstractBaseUser):
 
     objects = CustomUserManager()
 
-    USERNAME_FIELD = 'username'
+    USERNAME_FIELD = 'email'
     # REQUIRED_FIELDS = ['username']
 
     def __unicode__(self):

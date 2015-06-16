@@ -8,14 +8,23 @@ import hashlib
 
 
 class RegistrationForm(forms.ModelForm):
-
-    password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
-    password2 = forms.CharField(label="Password confirmation", widget=forms.PasswordInput)
+    
+    password1 = forms.CharField(label="Password",
+                                widget=forms.PasswordInput(attrs={'class':'form-control',
+                                                                  'required': ''}))
+    password2 = forms.CharField(label="Repeat password",
+                                widget=forms.PasswordInput(attrs={'class':'form-control',
+                                                                  'required': ''}))
 
     class Meta:
         model = CustomUser
         fields = ('username', 'email', 'password1', 'password2',)
 
+    def __init__(self, *args, **kwargs):
+        super(RegistrationForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.update({'class':'form-control', 'required' : ''})
+        self.fields['email'].widget.attrs.update({'class':'form-control', 'required' : ''})
+    
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
         password2 = self.cleaned_data.get("password2")
@@ -29,7 +38,15 @@ class RegistrationForm(forms.ModelForm):
             CustomUser.objects.get(username=username)
         except CustomUser.DoesNotExist:
             return username
-        raise validators.ValidationError("Custom user with username \"%s\" already exists." % username)
+        raise validators.ValidationError("User with this username already exists.")
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        try:
+            CustomUser.objects.get(email=email)
+        except CustomUser.DoesNotExist:
+            return email
+        raise validators.ValidationError("User with this email already exists.")
 
     def _generate_activation_key(self):
         salt = hashlib.sha1(str(random.random()).encode('utf-8')).hexdigest()[:5]
