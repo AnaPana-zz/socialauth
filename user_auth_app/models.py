@@ -1,5 +1,4 @@
-from django.contrib.auth.models import AbstractBaseUser
-from django.contrib.auth.models import BaseUserManager
+from social.storage.base import UserMixin
 from django.db import models
 
 import datetime
